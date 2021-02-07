@@ -1,1 +1,0 @@
-web: gunicorn microbrewforyou_server.wsgi --log-file -
