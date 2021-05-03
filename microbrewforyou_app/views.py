@@ -82,21 +82,15 @@ class IndexView(View):
             # end all posts merge
             # suggested posts based on city and brew_types_liked merged
             suggested_posts = []
-            suggested_posts_list = []
             suggested_users_list = CustomUser.objects.filter(
                 city=request.user.city, state=request.user.state)
             for user in suggested_users_list:
                 if user.id != request.user.id:
                     if user not in request.user.users_following.all():
-                        suggested_posts.append(Posts.objects.filter(
-                            author=user.id))
-            if suggested_posts:
-                for post in suggested_posts:
-                    suggested_posts_list.append(post)
-                suggested_posts = suggested_posts[0].all()
-            else:
-                suggested_posts = suggested_posts
-            # end suggested
+                        new_user_posts = Posts.objects.filter(
+                            author=user.id)
+                        for new_user_post in new_user_posts:
+                            suggested_posts.append(new_user_post)
             # nearby breweries
             brewery_list_by_city = Breweries.objects.filter(
                 city=request.user.city, state=request.user.state)
